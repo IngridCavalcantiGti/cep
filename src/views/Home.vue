@@ -1,6 +1,5 @@
 <template>
-  <div class="form container-fluid d-flex justify-content-center 
-                align-items-center">
+  <div class="container-fluid">
     <FormCep/>
   </div>
 </template>
@@ -14,16 +13,15 @@ export  default  defineComponent ( {
   components: {
     FormCep
   },
-
 })
-
 </script>
 
 <style>
+
 .container-fluid {
     width: 100vw;
     height: 100vh;
-       /* background: #00bdb4; */
-   background: linear-gradient(179deg, rgba(19, 123, 155, 0.49) 0%, #4b8bc8 76%);
+   background: linear-gradient(179deg, rgba(12, 12, 12, 0.98) 6%, #414141 100%);
 }
+
 </style>

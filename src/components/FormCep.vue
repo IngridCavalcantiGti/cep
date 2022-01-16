@@ -1,88 +1,105 @@
-<template>
-  <div class="card-form shadow border-0 rounded-3 d-flex">
-    <div class="bg-white d-flex">
-      <div class="container m-auto">
-        <div class="d-flex align-items-center justify-content-center">
-          <input
-            class="form-control form-control-lg shadow-sm"
-            type="text"
-            placeholder="Digite o CEP"
-            v-model="cep"
-            
-          />
+<template>     
+  <div class="container-fluid d-grid">
+    <div class="align-self-center">
+      <div class="row d-flex justify-content-center">
+        <div class="col-3">
+            <div class="input-group  rounded-pill box-cep">
+          <input type="text" class="form-control input-cep text-white custom-input" placeholder="Busca CEP" v-model="cep" >
+          <button class="btn btn-outline-secondary" type="button" @click="searchCep"><i class="bi-search text-light"></i></button>
         </div>
-        <div class="row">
-          <button type="button" @click="searchCep" class="btn mt-3 mx-auto">
-            Buscar
-          </button>
+        </div>
+      </div>
+       <div class="row mt-5 d-flex justify-content-center">
+          <div class="col-5">
+            <input id="name" class="form-control input-back text-white custom-input" type="text"  v-model="data.logradouro" readonly />
+          </div>
+          <div class="col-5 ms-5">
+             <input id="district" class="form-control input-back text-white custom-input" type="text"  v-model="data.bairro" readonly />
+          </div>
+      </div>
+      <div class="row  d-flex justify-content-center mt-5 ">
+        <div class="col-5">
+          <input id="city" class="form-control input-back text-white custom-input" type="text"  v-model="data.localidade" readonly />
+        </div>
+        <div class="col-5 ms-5">
+         <input id="district" class="form-control input-back text-white custom-input" type="text"  v-model="data.uf" readonly/>
         </div>
       </div>
     </div>
-    <div class="bg-form p-3 m-auto">
-      <ul class="list-group list-group-flush">
-        <span class="d-flex mb-2">
-          <li class="list-group-item w-75">Logradouro</li>
-          <li class="list-group-item w-25 ms-1">N</li>
-        </span>
-
-        <li class="list-group-item mb-2">Cidade</li>
-        <li class="list-group-item mb-2">Bairro</li>
-        <span class="d-flex">
-          <li class="list-group-item mb-2 w-50">UF</li>
-          <li class="list-group-item mb-2 w-50 ms-1">DDD</li>
-        </span>
-      </ul>
-       <pre>{{ data }}</pre>  <!--   testando o resultado -->
+  
+    <div>
+      <span class="text-white footer my-auto col-3"></span> 
+      <span class="text-white my-auto col-3 ms-2">Consulta de endereço pelo CEP</span> 
+      <span class="text-white footer my-auto col-3 ms-2"></span> 
     </div>
-   
-  </div>
+    
+   </div>
 </template>
+
 <script>
 import { defineComponent,  ref } from "@vue/composition-api";
 import axios from "axios";
 
 export default defineComponent({
   setup() {
-      const data = ref(null);
+      const data = ref('');
       const cep = ref(null)
  
        const searchCep = () => {
+        
         const getCep = cep.value
+
         axios.get(`https://viacep.com.br/ws/${getCep}/json/`)
           .then(response => 
            data.value = response.data
+          
           )
           .catch(error => console.log(error))
       }
 
-  return { searchCep, data, cep };
+  return { searchCep, data, cep,  };
   }
 });
 </script>
 
 <style>
-.card-form {
-  width: 800px;
-  height: 500px;
+
+  .input-back{
+    background: transparent !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid  #26a69a !important;;
+  }
+  
+  .input-cep{
+    background: transparent !important;
+    border:none !important;
+  }
+
+  button {
+    background:  #26a69a !important;
+    border-radius: 50% !important;
+  }
+
+  .box-cep{
+    background: gradiente;
+    border:none !important
+  }
+
+  .input-group {
+    border-radius: 20px !important;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  }
+
+ .custom-input:focus {
+  outline: none !important;
+  box-shadow: none !important;;
+   box-shadow: none !important;
 }
 
-.bg-cep {
-  width: 40%;
-  height: 100%;
-}
-
-.bg-form {
-  width: 80%;
-  height: 100%;
-}
-
-.btn {
-  background: #4b8bc8 !important;
-  color: white !important;
-  width: 30% !important;
-}
-
-.form-control {
-  width: 70% !important;
+.footer{ 
+  padding-right: 20px;
+  background: #26a69a;
 }
 </style>
