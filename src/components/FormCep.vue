@@ -2,11 +2,12 @@
   <div class="container-fluid d-grid align-content-center">
     <div class="align-self-center">
       <div class="row d-flex justify-content-center">
-        <div class="col-3">
-            <div class="input-group  rounded-pill box-cep">
-          <input type="text" class="form-control input-cep text-white custom-input" v-mask="'#####-###'" placeholder="Busca CEP" v-model="cep" >
-          <button class="btn btn-outline-secondary" type="button" @click="searchCep"><i class="bi-search text-light"></i></button>
-        </div>
+        <div class="col-3 h-64">
+            <div class="input-group rounded-pill box-cep" :class="{ 'border border-danger': data.erro === true }">
+              <input type="text" class="form-control input-cep text-white custom-input " v-mask="'#####-###'" placeholder="Busca CEP" v-model="cep">
+              <button class="btn btn-outline-secondary" type="button" @click="searchCep"><i class="bi-search text-light"></i></button>
+           </div>
+            <span class="text-danger ms-3 small" v-if="data.erro === true">Cep não encontrado</span>
         </div>
       </div>
        <div class="row mt-5 d-flex justify-content-center">
@@ -29,11 +30,6 @@
         </div>
       </div> 
     </div>
-  
-  <!-- testando -->
-    <span class="text-white">{{data.erro}}</span>
-  <!-- testando -->
-    
         <div class="d-flex justify-content-start ">
           <div>
             <span class="text-white footer my-auto"></span> 
@@ -41,7 +37,6 @@
             <span class="text-white footer my-auto ms-2"></span>
           </div>
         </div>
-   
    </div>
 </template>
 
@@ -49,28 +44,24 @@
 import { defineComponent,  ref } from "@vue/composition-api";
 import axios from "axios";
 
-
 export default defineComponent({
   setup() {
       const data = ref('');
-      const cep = ref(null)
-
+      const cep = ref(null);
+         
       const searchCep = () => {
-      const getCep = cep.value
+      const getCep = cep.value;
       const formatCep = getCep.replace('-', '')
-    
+     
         if(formatCep.length === 8) {
-        
             axios.get(`https://viacep.com.br/ws/${formatCep}/json/`)
             .then(response =>  data.value = response.data)
             .catch(error => console.log(error))
-            
-        }
-      }
+      }}
 
        const clear = () => {data.value = '', cep.value = ''}
 
-    return { searchCep, data, cep, clear};
+      return { searchCep, data, cep, clear};
   }
 });
 </script>
@@ -91,10 +82,12 @@ export default defineComponent({
   }
 
   button:not(.custom) {
- 
     background:  #26a69a !important;
     border-radius: 50% !important;
-  
+  }
+
+  button:hover {
+    background:  #1d8177 !important;
   }
 
   .box-cep{
@@ -121,5 +114,9 @@ export default defineComponent({
 .custom {
    border-radius: 5px !important;
     background: #26a69a !important;
+}
+
+.h-64 {
+  height: 64px;
 }
 </style>
