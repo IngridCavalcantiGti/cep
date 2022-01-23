@@ -3,11 +3,11 @@
     <div class="align-self-center">
       <div class="row d-flex justify-content-center">
         <div class="col-3 h-64">
-            <div class="input-group rounded-pill box-cep" :class="{ 'border border-danger': data.erro === true }">
+            <div class="input-group rounded-pill box-cep" :class="{ 'border border-danger': hasError }">
               <input type="text" class="form-control input-cep text-white custom-input " v-mask="'#####-###'" placeholder="Busca CEP" v-model="cep">
               <button class="btn btn-outline-secondary" type="button" @click="searchCep"><i class="bi-search text-light"></i></button>
            </div>
-            <span class="text-danger ms-3 small" v-if="data.erro === true">Cep não encontrado</span>
+            <span class="text-danger ms-3 small" v-if="hasError">Cep não encontrado</span>
         </div>
       </div>
        <div class="row mt-5 d-flex justify-content-center">
@@ -48,6 +48,7 @@ export default defineComponent({
   setup() {
       const data = ref('');
       const cep = ref(null);
+      const hasError = ref(false);
          
       const searchCep = () => {
       const getCep = cep.value;
@@ -55,13 +56,20 @@ export default defineComponent({
      
         if(formatCep.length === 8) {
             axios.get(`https://viacep.com.br/ws/${formatCep}/json/`)
-            .then(response =>  data.value = response.data)
+            
+            .then(response =>  data.value = response.data )
+            .then(() =>   { 
+                if(Object.keys(data.value)[0] === 'erro') { 
+                  hasError.value = true;
+                }
+              })
             .catch(error => console.log(error))
-      }}
+        }
+      }
 
-       const clear = () => {data.value = '', cep.value = ''}
+       const clear = () => {data.value = '', cep.value = '', hasError.value = false}
 
-      return { searchCep, data, cep, clear};
+      return { searchCep, data, cep, clear, hasError};
   }
 });
 </script>
