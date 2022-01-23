@@ -4,7 +4,7 @@
       <div class="row d-flex justify-content-center">
         <div class="col-3 h-64">
             <div class="input-group rounded-pill box-cep" :class="{ 'border border-danger': hasError }">
-              <input type="text" class="form-control input-cep text-white custom-input " v-mask="'#####-###'" placeholder="Busca CEP" v-model="cep">
+              <input type="text" class="form-control input-cep text-white custom-input " v-mask="'#####-###'" placeholder="Busca CEP" v-model="cep" @keyup.enter="searchCep">
               <button class="btn btn-outline-secondary" type="button" @click="searchCep"><i class="bi-search text-light"></i></button>
            </div>
             <span class="text-danger ms-3 small" v-if="hasError">Cep não encontrado</span>
