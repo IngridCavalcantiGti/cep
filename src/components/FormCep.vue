@@ -61,6 +61,8 @@ export default defineComponent({
             .then(() =>   { 
                 if(Object.keys(data.value)[0] === 'erro') { 
                   hasError.value = true;
+                } else {
+                   hasError.value = false;
                 }
               })
             .catch(error => console.log(error))
